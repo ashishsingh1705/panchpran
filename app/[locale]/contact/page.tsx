@@ -25,7 +25,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
         </p>
       </div>
       <section className={`${staticStyles.section} ${staticStyles.sectionLast}`} style={{ maxWidth: 560 }}>
-        <InquiryForm locale={locale} />
+        <InquiryForm locale={locale} type="contact" />
       </section>
     </>
   );

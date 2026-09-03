@@ -25,7 +25,7 @@ export default function PartnerPage({ params }: { params: { locale: Locale } }) 
         </p>
       </div>
       <section className={`${staticStyles.section} ${staticStyles.sectionLast}`} style={{ maxWidth: 560 }}>
-        <InquiryForm locale={locale} extraFieldLabel={{ hi: "संगठन का नाम", en: "Organisation name" }} />
+        <InquiryForm locale={locale} type="partner" extraFieldLabel={{ hi: "संगठन का नाम", en: "Organisation name" }} />
       </section>
     </>
   );

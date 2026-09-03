@@ -25,7 +25,7 @@ export default function VolunteerPage({ params }: { params: { locale: Locale } }
         </p>
       </div>
       <section className={`${staticStyles.section} ${staticStyles.sectionLast}`} style={{ maxWidth: 560 }}>
-        <InquiryForm locale={locale} extraFieldLabel={{ hi: "रुचि का क्षेत्र", en: "Area of interest" }} />
+        <InquiryForm locale={locale} type="volunteer" extraFieldLabel={{ hi: "रुचि का क्षेत्र", en: "Area of interest" }} />
       </section>
     </>
   );
