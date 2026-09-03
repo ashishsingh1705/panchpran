@@ -36,6 +36,18 @@ const securityHeaders = [
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Force a real cache miss on Vercel. Every deploy log for this project has
+  // shown "Restored build cache from previous deployment" followed by the
+  // exact same 26.6 kB middleware bundle and the exact same
+  // "ReferenceError: __dirname is not defined" crash — unchanged across
+  // several source-level fixes that each verified clean in a local, fully
+  // fresh `next build`. That means Vercel's restored `.next/cache` is
+  // handing back a stale, pre-fix compiled middleware artifact that `next
+  // build` isn't correctly invalidating on its own. Renaming the output
+  // directory means there is nothing under that name for Vercel to restore,
+  // so the next deploy is guaranteed to compile from source instead of
+  // reusing whatever produced every prior crash.
+  distDir: "build",
   async headers() {
     return [
       {
