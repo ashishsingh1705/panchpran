@@ -44,6 +44,20 @@ const nextConfig = {
       },
     ];
   },
+  // Next.js bundles a few internal deps (ua-parser-js, @opentelemetry/api)
+  // into the middleware's Edge bundle that reference `__dirname` at module
+  // load time. Webpack normally shims that per-module with an `eval("var
+  // __dirname = ...")` wrapper, but that shim doesn't fire reliably inside
+  // Vercel's production Edge runtime, crashing every request with
+  // "ReferenceError: __dirname is not defined". Telling webpack to mock
+  // `__dirname` as a literal string at build time for the edge compilation
+  // removes the runtime shim entirely, so there's nothing left to fail.
+  webpack: (config, { nextRuntime }) => {
+    if (nextRuntime === "edge") {
+      config.node = { ...config.node, __dirname: true };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
