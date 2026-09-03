@@ -1,0 +1,91 @@
+.card {
+  padding: 32px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.toggleTrack {
+  display: flex;
+  padding: 5px;
+  background: var(--color-track);
+  border-radius: var(--radius-pill);
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: 9px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.toggleBtnActive {
+  background: var(--color-primary);
+  color: var(--color-on-dark);
+}
+
+.amountRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.amountChip {
+  padding: 14px 0;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.amountChipActive {
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.directedLabel {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.directedRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pillarChip {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  font-size: 13px;
+}
+
+.pillarChipActive {
+  border-color: var(--color-primary);
+  background: var(--color-sand);
+  color: var(--color-primary);
+}
+
+.submit {
+  width: 100%;
+  padding: 15px;
+}
+
+.reassurance {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}

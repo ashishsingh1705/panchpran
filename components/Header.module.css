@@ -1,0 +1,251 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 16px var(--page-gutter);
+  background: rgba(250, 248, 243, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.row {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.brandMark {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex: none;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brandHi {
+  font-family: var(--font-deva), sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.brandEn {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.navItem:hover {
+  color: var(--color-primary);
+}
+
+.navItemActive {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.disclosure {
+  position: relative;
+}
+
+.disclosureTrigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  font-size: 14.5px;
+  font-weight: 500;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.disclosureTrigger:hover,
+.disclosureOpen {
+  color: var(--color-primary);
+}
+
+.caret {
+  transition: transform 150ms ease;
+}
+
+.caretOpen {
+  transform: rotate(180deg);
+}
+
+.disclosurePanel {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  box-shadow: 0 12px 32px rgba(23, 33, 29, 0.12);
+}
+
+.disclosurePanel a {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-family: var(--font-deva), sans-serif;
+}
+
+.disclosurePanel a:hover {
+  background: var(--color-surface-alt);
+}
+
+.utilities {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.langSwitch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.langActive {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.langInactive {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.langDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--color-border-divider);
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  padding: 8px;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    display: none;
+  }
+  .langSwitch {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+}
+
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 32, 25, 0.5);
+  z-index: 60;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(340px, 88vw);
+  background: var(--color-bg);
+  z-index: 61;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.drawerHeader {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawerClose {
+  background: none;
+  border: none;
+  padding: 8px;
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  gap: 4px;
+}
+
+.drawerNavItem {
+  display: block;
+  padding: 14px 4px;
+  font-size: 17px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-border);
+  min-height: 44px;
+}
+
+.drawerFooter {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 20px;
+}
+
+.drawerLangSwitch {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
