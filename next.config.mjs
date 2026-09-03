@@ -55,6 +55,14 @@ const nextConfig = {
   webpack: (config, { nextRuntime }) => {
     if (nextRuntime === "edge") {
       config.node = { ...config.node, __dirname: true };
+      // Vercel restores Next's persistent webpack cache from the previous
+      // deployment before every build. That cache doesn't reliably bust
+      // just because this file changed, so a stale edge bundle (built
+      // before the __dirname mock above existed) can get reused verbatim.
+      // Disabling the cache for the edge compilation forces it to always
+      // recompile from source, so this config can never silently stop
+      // applying again.
+      config.cache = false;
     }
     return config;
   },
