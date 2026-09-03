@@ -26,7 +26,24 @@ export default function LegalPage({ params }: { params: { doc: string; locale: L
         <span className="eyebrow">{isHi ? "कानूनी" : "LEGAL"}</span>
         <h1 className={staticStyles.h1Latin}>{doc.title[locale]}</h1>
         <p className={staticStyles.lead}>{doc.scope[locale]}</p>
+        {doc.lastUpdated && (
+          <p className="mono" style={{ fontSize: 11.5, color: "var(--color-text-faint)", marginTop: 16 }}>
+            {isHi ? "अंतिम अद्यतन" : "Last updated"}: {doc.lastUpdated}
+          </p>
+        )}
       </div>
+
+      {doc.sections && (
+        <section className={staticStyles.section}>
+          {doc.sections.map((section) => (
+            <div key={section.heading.en} style={{ marginBottom: 32, maxWidth: 720 }}>
+              <h2 className={staticStyles.sectionTitle}>{section.heading[locale]}</h2>
+              <p className={staticStyles.body}>{section.body[locale]}</p>
+            </div>
+          ))}
+        </section>
+      )}
+
       <section className={`${staticStyles.section} ${staticStyles.sectionLast}`}>
         <h2 className={staticStyles.sectionTitle}>{isHi ? "लंबित" : "Outstanding"}</h2>
         <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>

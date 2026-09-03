@@ -50,16 +50,38 @@ cp .env.example .env.local
 | `RESEND_API_KEY` | Yes, for forms to work | From [resend.com](https://resend.com) (free tier is enough) |
 | `INQUIRY_TO_EMAIL` | Yes, for forms to work | The inbox that receives Contact/Volunteer/Partner submissions |
 | `INQUIRY_FROM_EMAIL` | No | Defaults to Resend's shared sender; set once you verify your own domain in Resend |
+| `INQUIRY_TO_EMAIL_CONTACT` / `_VOLUNTEER` / `_PARTNER` | No | Route one form's submissions to a different inbox than the others |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | No, but recommended | Free Cloudflare Turnstile CAPTCHA. Without it, the forms rely on a honeypot field, a minimum-fill-time check and a per-IP rate limit — real, but a scripted attacker can still get through |
+| `OPS_ALERT_WEBHOOK_URL` | No | Slack/Discord incoming-webhook URL; posts there when a submission genuinely fails to send |
 
-Without the first two set, `/api/inquiry` returns an honest "not configured"
-response rather than a fake success — the forms are built to fail loudly, not
-silently pretend a message was sent.
+Without `RESEND_API_KEY`/`INQUIRY_TO_EMAIL` set, `/api/inquiry` returns an
+honest "not configured" response rather than a fake success — the forms are
+built to fail loudly, not silently pretend a message was sent.
+
+### What the forms actually do now
+
+- **Rate limiting**: 5 submissions per IP per minute, in-memory. This is
+  best-effort — it works per warm serverless instance, not across all of
+  them, so it slows down a naive script but isn't a substitute for a shared
+  store (Upstash Redis) if abuse becomes a real problem. See `lib/rateLimit.ts`.
+- **CAPTCHA**: wired for Cloudflare Turnstile, but only active once you set
+  the two Turnstile env vars above.
+- **Consent**: every form requires checking "I have read and agree to the
+  Privacy Policy" before it will submit. The consent timestamp and the
+  submitter's IP are included in the email sent to your inbox, as a record
+  that consent was given.
+- **Confirmation email**: the submitter also gets a short "we've received
+  your message" email — best-effort, its failure doesn't block the main
+  submission to your inbox.
 
 **Who can see form submissions right now**: nobody has built a database or
 admin panel for this yet — submissions arrive as email in the `INQUIRY_TO_EMAIL`
-inbox. That inbox *is* the access control, so keep 2FA on it. If you need
-submissions logged somewhere queryable (e.g. a CRM or spreadsheet) rather than
-just an inbox, that's a bigger addition — ask and it can be built.
+inbox (or its per-type override). That inbox *is* the access control, so keep
+2FA on it. The Privacy Policy (`/legal/privacy`) states messages are kept for
+12 months and describes Resend and Vercel as the processors involved — keep
+that page in sync if this handling ever changes. If you need submissions
+logged somewhere queryable (e.g. a CRM or spreadsheet) rather than just an
+inbox, that's a bigger addition — ask and it can be built.
 
 ## Deploying (Vercel)
 

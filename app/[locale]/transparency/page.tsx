@@ -132,8 +132,8 @@ export default function TransparencyPage({ params }: { params: { locale: Locale 
             <h3>{isHi ? "दानदाता गोपनीयता" : "Donor privacy"}</h3>
             <p>
               {isHi
-                ? "दानदाता की पहचान कभी प्रकाशित नहीं की जाती। दानदाता रिकॉर्ड तक पहुंच सीमित और ऑडिट की जाती है।"
-                : "Donor identity is never published. Access to donor records is restricted and audited."}
+                ? "दानदाता की पहचान कभी प्रकाशित नहीं की जाती। रिकॉर्ड तक पहुंच केवल अधिकृत ट्रस्ट स्टाफ तक सीमित है। यदि ट्रस्ट भविष्य में एक समर्पित दानदाता-प्रबंधन प्रणाली अपनाता है, तो एक औपचारिक पहुंच लॉग जोड़ा जाएगा।"
+                : "Donor identity is never published. Access to records is limited to authorised trust staff. A formal access log will be added if the trust adopts a dedicated donor-management system."}
             </p>
           </div>
           <div className={styles.grievanceCol}>

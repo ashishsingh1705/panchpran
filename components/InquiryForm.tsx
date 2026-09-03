@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Script from "next/script";
 import styles from "./DonateFlow.module.css";
 import type { Locale } from "@/lib/i18n";
 
@@ -13,9 +15,17 @@ const copy = {
     message: "संदेश",
     submit: "भेजें",
     sending: "भेजा जा रहा है…",
-    sent: "धन्यवाद। आपका संदेश भेज दिया गया है — हमारी टीम जल्द ही आपसे संपर्क करेगी।",
-    error: "संदेश भेजने में समस्या हुई। कृपया कुछ देर बाद फिर से प्रयास करें।",
-    notConfigured: "यह फॉर्म अभी सेट अप नहीं हुआ है। कृपया बाद में फिर से प्रयास करें।",
+    sent: "धन्यवाद। आपका संदेश भेज दिया गया है — हमारी टीम जल्द ही आपसे संपर्क करेगी। पुष्टि के लिए एक ईमेल भी भेजा गया है।",
+    consentPrefix: "मैं ",
+    consentLink: "गोपनीयता नीति",
+    consentSuffix: " पढ़ चुका/चुकी हूं और सहमत हूं।",
+    errors: {
+      default: "संदेश भेजने में समस्या हुई। कृपया कुछ देर बाद फिर से प्रयास करें।",
+      rate_limited: "बहुत सारे प्रयास हो गए हैं। कृपया एक मिनट बाद फिर से प्रयास करें।",
+      consent_required: "आगे बढ़ने के लिए कृपया गोपनीयता नीति से सहमति दें।",
+      turnstile_failed: "सत्यापन विफल रहा। कृपया पेज रीलोड करके फिर से प्रयास करें।",
+      not_configured: "यह फॉर्म अभी सेट अप नहीं हुआ है। कृपया बाद में फिर से प्रयास करें।",
+    },
   },
   en: {
     name: "Full name",
@@ -23,11 +33,27 @@ const copy = {
     message: "Message",
     submit: "Send",
     sending: "Sending…",
-    sent: "Thank you. Your message has been sent — our team will get back to you soon.",
-    error: "Something went wrong sending your message. Please try again shortly.",
-    notConfigured: "This form isn't set up yet. Please check back later.",
+    sent: "Thank you. Your message has been sent — our team will get back to you soon. A confirmation email is on its way too.",
+    consentPrefix: "I have read and agree to the ",
+    consentLink: "Privacy Policy",
+    consentSuffix: ".",
+    errors: {
+      default: "Something went wrong sending your message. Please try again shortly.",
+      rate_limited: "Too many attempts. Please try again in a minute.",
+      consent_required: "Please agree to the Privacy Policy to continue.",
+      turnstile_failed: "Verification failed. Please reload the page and try again.",
+      not_configured: "This form isn't set up yet. Please check back later.",
+    },
   },
 };
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+declare global {
+  interface Window {
+    onTurnstileVerified?: (token: string) => void;
+  }
+}
 
 export default function InquiryForm({
   locale,
@@ -39,8 +65,18 @@ export default function InquiryForm({
   extraFieldLabel?: { hi: string; en: string };
 }) {
   const t = copy[locale];
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error" | "not_configured">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [errorCode, setErrorCode] = useState<string | null>(null);
+  const [consented, setConsented] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [renderedAt] = useState(() => Date.now());
+
+  useEffect(() => {
+    window.onTurnstileVerified = (token: string) => setTurnstileToken(token);
+    return () => {
+      delete window.onTurnstileVerified;
+    };
+  }, []);
 
   if (status === "sent") {
     return (
@@ -50,6 +86,9 @@ export default function InquiryForm({
     );
   }
 
+  const needsTurnstile = Boolean(TURNSTILE_SITE_KEY);
+  const canSubmit = consented && (!needsTurnstile || Boolean(turnstileToken)) && status !== "sending";
+
   return (
     <form
       className={styles.panel}
@@ -58,6 +97,7 @@ export default function InquiryForm({
         const form = e.currentTarget;
         const data = new FormData(form);
         setStatus("sending");
+        setErrorCode(null);
         try {
           const res = await fetch("/api/inquiry", {
             method: "POST",
@@ -70,18 +110,21 @@ export default function InquiryForm({
               message: data.get("message"),
               company: data.get("company") ?? "",
               renderedAt,
+              consent: consented,
+              locale,
+              turnstileToken,
             }),
           });
-          const json = await res.json().catch(() => ({ ok: false }));
+          const json = await res.json().catch(() => ({ ok: false, error: "default" }));
           if (res.ok && json.ok) {
             setStatus("sent");
-          } else if (res.status === 503) {
-            setStatus("not_configured");
           } else {
-            setStatus("error");
+            setStatus("idle");
+            setErrorCode(json.error && json.error in t.errors ? json.error : "default");
           }
         } catch {
-          setStatus("error");
+          setStatus("idle");
+          setErrorCode("default");
         }
       }}
     >
@@ -123,17 +166,31 @@ export default function InquiryForm({
           }}
         />
       </div>
-      <button type="submit" className="btn btn-secondary" disabled={status === "sending"}>
+
+      <label className={styles.checkboxRow} style={{ fontSize: 13.5 }}>
+        <input type="checkbox" checked={consented} onChange={(e) => setConsented(e.target.checked)} required />
+        <span>
+          {t.consentPrefix}
+          <Link href={`/${locale}/legal/privacy`} className="section-link" target="_blank">
+            {t.consentLink}
+          </Link>
+          {t.consentSuffix}
+        </span>
+      </label>
+
+      {needsTurnstile && (
+        <>
+          <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive" />
+          <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-callback="onTurnstileVerified" />
+        </>
+      )}
+
+      <button type="submit" className="btn btn-secondary" disabled={!canSubmit}>
         {status === "sending" ? t.sending : t.submit}
       </button>
-      {status === "error" && (
+      {errorCode && (
         <p role="alert" style={{ fontSize: 13.5, color: "var(--color-error)" }}>
-          {t.error}
-        </p>
-      )}
-      {status === "not_configured" && (
-        <p role="alert" className="mono" style={{ fontSize: 11.5, color: "var(--color-text-faint)", lineHeight: 1.7 }}>
-          {t.notConfigured}
+          {t.errors[errorCode as keyof typeof t.errors] ?? t.errors.default}
         </p>
       )}
     </form>
