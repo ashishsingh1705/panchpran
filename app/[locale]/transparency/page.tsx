@@ -2,19 +2,24 @@ import type { Metadata } from "next";
 import styles from "./transparency.module.css";
 import { transparencyCells } from "@/lib/homeContent";
 import { pillars } from "@/lib/pillars";
+import { orgDetails } from "@/lib/orgDetails";
 import type { Locale } from "@/lib/i18n";
 
 export function generateMetadata({ params }: { params: { locale: Locale } }): Metadata {
   return { title: params.locale === "hi" ? "पारदर्शिता" : "Transparency" };
 }
 
-const registrationFields = [
-  { hi: "पंजीकरण संख्या", en: "Registration number" },
-  { hi: "पंजीकरण तिथि", en: "Registration date" },
-  { hi: "पैन", en: "PAN" },
-  { hi: "पंजीकृत कार्यालय", en: "Registered office" },
-  { hi: "80जी / 12ए स्थिति", en: "80G / 12A status" },
-];
+function registrationFields(isHi: boolean) {
+  const pending = isHi ? "प्रदान की जानी है" : "to be provided by the trust";
+  return [
+    { hi: "ट्रस्ट पंजीकरण संख्या", en: "Trust registration number", value: orgDetails.trustRegistrationNumber },
+    { hi: "पैन", en: "PAN", value: orgDetails.panNumber },
+    { hi: "एनजीओ दर्पण आईडी", en: "NGO Darpan ID", value: orgDetails.darpanId },
+    { hi: "पंजीकरण आईडी (IN-UP)", en: "Registration ID (IN-UP)", value: orgDetails.inUpRegistrationId },
+    { hi: "पंजीकृत कार्यालय", en: "Registered office", value: pending },
+    { hi: "80जी / 12ए स्थिति", en: "80G / 12A status", value: pending },
+  ];
+}
 
 export default function TransparencyPage({ params }: { params: { locale: Locale } }) {
   const { locale } = params;
@@ -49,12 +54,39 @@ export default function TransparencyPage({ params }: { params: { locale: Locale 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{isHi ? "पंजीकरण विवरण" : "Registration details"}</h2>
         <div className={styles.table}>
-          {registrationFields.map((f) => (
+          {registrationFields(isHi).map((f) => (
             <div className={styles.tableRow} key={f.en}>
               <span className={styles.tableKey}>{isHi ? f.hi : f.en}</span>
-              <span className={styles.tableValue}>{isHi ? "प्रदान की जानी है" : "to be provided by the trust"}</span>
+              <span className={styles.tableValue}>{f.value}</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>{isHi ? "बैंक विवरण (सीधे हस्तांतरण के लिए)" : "Bank details (for direct transfer)"}</h2>
+        <p style={{ fontSize: 13.5, lineHeight: 1.75, color: "var(--color-text-muted)", marginBottom: 16, maxWidth: 640 }}>
+          {isHi
+            ? "ऑनलाइन भुगतान गेटवे जुड़ने तक, योगदान सीधे नीचे दिए गए बैंक खाते में NEFT/RTGS/IMPS के माध्यम से भेजे जा सकते हैं। कृपया हस्तांतरण के बाद रसीद के लिए संपर्क करें।"
+            : "Until the online payment gateway is connected, contributions can be sent directly via NEFT/RTGS/IMPS to the account below. Please get in touch after transferring so a receipt can be issued."}
+        </p>
+        <div className={styles.table}>
+          <div className={styles.tableRow}>
+            <span className={styles.tableKey}>{isHi ? "बैंक का नाम" : "Bank name"}</span>
+            <span className={styles.tableValue}>{orgDetails.bank.name}</span>
+          </div>
+          <div className={styles.tableRow}>
+            <span className={styles.tableKey}>{isHi ? "शाखा" : "Branch"}</span>
+            <span className={styles.tableValue}>{orgDetails.bank.branch}</span>
+          </div>
+          <div className={styles.tableRow}>
+            <span className={styles.tableKey}>{isHi ? "खाता संख्या" : "Account number"}</span>
+            <span className={styles.tableValue}>{orgDetails.bank.accountNumber}</span>
+          </div>
+          <div className={styles.tableRow}>
+            <span className={styles.tableKey}>IFSC</span>
+            <span className={styles.tableValue}>{isHi ? "प्रदान किया जाना है" : "to be provided by the trust"}</span>
+          </div>
         </div>
       </section>
 

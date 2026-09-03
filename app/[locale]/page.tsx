@@ -7,6 +7,7 @@ import Reveal from "@/components/Reveal";
 import DonateTeaser from "@/components/DonateTeaser";
 import { pillars } from "@/lib/pillars";
 import { approachSteps, impactMetrics, initiatives, transparencyCells, getInvolvedCards, stories } from "@/lib/homeContent";
+import { orgDetails } from "@/lib/orgDetails";
 import type { Locale } from "@/lib/i18n";
 
 export function generateMetadata({ params }: { params: { locale: Locale } }): Metadata {
@@ -65,7 +66,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         <span className={styles.trustItem}>
           <span className={styles.trustDot} aria-hidden="true" />
           {isHi ? "पंजीकृत सार्वजनिक धर्मार्थ ट्रस्ट" : "Registered public charitable trust"}
-          <span className="mono" style={{ fontSize: 11 }}>[registration no. — to be provided]</span>
+          <span className="mono" style={{ fontSize: 11 }}>[{orgDetails.trustRegistrationNumber} · Darpan {orgDetails.darpanId}]</span>
         </span>
         <span className={styles.trustItem}>
           <span className={styles.trustDot} aria-hidden="true" />

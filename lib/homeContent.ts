@@ -56,7 +56,7 @@ export const initiatives = [
 export const transparencyCells = [
   { hi: "वार्षिक रिपोर्ट", en: "Annual reports", status: "awaiting upload" },
   { hi: "लेखा परीक्षित वित्तीय विवरण", en: "Audited financial statements", status: "awaiting upload" },
-  { hi: "पंजीकरण विवरण", en: "Registration details", status: "to be provided by the trust" },
+  { hi: "पंजीकरण विवरण", en: "Registration details", status: "published — see transparency centre" },
   { hi: "शासी निकाय और नेतृत्व", en: "Governing body & leadership", status: "to be provided by the trust" },
   { hi: "नीतियां और अनुपालन", en: "Policies & compliance", status: "awaiting upload" },
   { hi: "दानदाता जानकारी और निधि का उपयोग", en: "Donor information & use of funds", status: "awaiting upload" },

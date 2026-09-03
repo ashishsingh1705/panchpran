@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./Footer.module.css";
 import { pillars } from "@/lib/pillars";
+import { orgDetails } from "@/lib/orgDetails";
 import type { Locale } from "@/lib/i18n";
 
 const t = {
@@ -75,6 +76,9 @@ export default function Footer({ locale }: { locale: Locale }) {
               <span className="mono">{c.address}</span>
               <span className="mono">{c.email}</span>
               <span className="mono">{c.phone}</span>
+              <span className="mono">PAN {orgDetails.panNumber}</span>
+              <span className="mono">{locale === "hi" ? "पंजीकरण" : "Reg."} {orgDetails.trustRegistrationNumber}</span>
+              <span className="mono">Darpan {orgDetails.darpanId}</span>
             </div>
             <div className={styles.socialRow}>
               <a href="#" aria-label="Instagram">
