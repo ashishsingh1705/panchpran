@@ -1,0 +1,172 @@
+.hero {
+  padding: clamp(56px, 8vw, 96px) var(--page-gutter) 0;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.h1 {
+  font-family: var(--font-deva), sans-serif;
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: 600;
+  line-height: 1.34;
+  margin-top: 14px;
+}
+
+.lead {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-text-muted);
+  max-width: 620px;
+  margin-top: 20px;
+}
+
+.section {
+  padding: clamp(56px, 8vw, 96px) var(--page-gutter) 0;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.registerList {
+  margin-top: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.registerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.registerRow:last-child {
+  border-bottom: none;
+}
+
+.registerName {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.registerStatus {
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  color: var(--color-text-faint);
+  white-space: nowrap;
+}
+
+.table {
+  margin-top: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 2fr;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableKey {
+  padding: 16px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-surface-alt);
+}
+
+.tableValue {
+  padding: 16px 20px;
+  font-family: var(--font-mono), monospace;
+  font-size: 13.5px;
+  color: var(--color-text-faint);
+  background: var(--color-surface);
+}
+
+.trusteeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.trusteeCard {
+  padding: 24px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  text-align: center;
+  color: var(--color-text-faint);
+  font-size: 13px;
+}
+
+.fundsBars {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  margin-top: 32px;
+  height: 140px;
+}
+
+.fundsBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.fundsFill {
+  width: 100%;
+  height: 4px;
+  background: var(--color-track);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.fundsLabel {
+  font-size: 12.5px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.grievanceBand {
+  margin-top: clamp(56px, 8vw, 96px);
+  background: var(--color-sand);
+  padding: clamp(48px, 8vw, 80px) var(--page-gutter);
+}
+
+.grievanceInner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+}
+
+.grievanceCol h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.grievanceCol p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-text-muted-dark);
+}
