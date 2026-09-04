@@ -5,7 +5,7 @@ import { legalDocs } from "@/lib/legal";
 
 const BASE_URL = "https://panchpranvikastrust.org";
 
-const staticPaths = ["", "/about", "/impact", "/transparency", "/get-involved", "/donate", "/volunteer", "/partner", "/contact"];
+const staticPaths = ["", "/about", "/impact", "/transparency", "/reports", "/get-involved", "/donate", "/volunteer", "/partner", "/contact"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];

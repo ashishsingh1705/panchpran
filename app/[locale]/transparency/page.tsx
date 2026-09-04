@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import styles from "./transparency.module.css";
 import { transparencyCells } from "@/lib/homeContent";
 import { pillars } from "@/lib/pillars";
@@ -38,6 +39,18 @@ export default function TransparencyPage({ params }: { params: { locale: Locale 
             : "Nothing on this page is shown until it exists. No certificate, rating, award, partner logo or figure appears until the document behind it does."}
         </p>
       </div>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>{isHi ? "रिपोर्ट प्रारूप" : "Report format"}</h2>
+        <p style={{ fontSize: 13.5, lineHeight: 1.75, color: "var(--color-text-muted)", marginTop: 16, maxWidth: 640 }}>
+          {isHi
+            ? "वास्तविक वार्षिक रिपोर्ट और लेखा-परीक्षित वित्तीय विवरण प्रकाशित होने तक, नीचे दिया गया पृष्ठ दिखाता है कि वे किस अंतरराष्ट्रीय शैली प्रारूप में प्रकाशित होंगे — केवल नमूना आंकड़ों के साथ।"
+            : "Until the real annual report and audited financial statements are published, the page below shows the international-style format they will follow — with sample figures only."}
+        </p>
+        <Link href={`/${locale}/reports`} className="btn btn-outline" style={{ marginTop: 20 }}>
+          {isHi ? "नमूना वार्षिक रिपोर्ट देखें" : "View the sample annual report"}
+        </Link>
+      </section>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{isHi ? "प्रकटीकरण रजिस्टर" : "Disclosure register"}</h2>
