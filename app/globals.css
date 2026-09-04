@@ -315,3 +315,16 @@ input {
     animation: none;
   }
 }
+
+@media print {
+  header,
+  footer,
+  .skip-link,
+  .btn {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+}

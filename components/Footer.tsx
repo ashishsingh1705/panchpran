@@ -148,10 +148,10 @@ export default function Footer({ locale }: { locale: Locale }) {
             <h2>{c.transparency}</h2>
             <ul>
               <li>
-                <Link href={`/${locale}/transparency`}>{c.annualReports}</Link>
+                <Link href={`/${locale}/reports`}>{c.annualReports}</Link>
               </li>
               <li>
-                <Link href={`/${locale}/transparency`}>{c.financial}</Link>
+                <Link href={`/${locale}/reports`}>{c.financial}</Link>
               </li>
               <li>
                 <Link href={`/${locale}/transparency`}>{c.governance}</Link>
