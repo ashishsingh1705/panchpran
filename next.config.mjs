@@ -44,6 +44,28 @@ const nextConfig = {
       },
     ];
   },
+  // Next.js bundles a few internal deps (ua-parser-js, @opentelemetry/api)
+  // into the middleware's Edge bundle that reference `__dirname` at module
+  // load time. Webpack normally shims that per-module with an `eval("var
+  // __dirname = ...")` wrapper, but that shim doesn't fire reliably inside
+  // Vercel's production Edge runtime, crashing every request with
+  // "ReferenceError: __dirname is not defined". Telling webpack to mock
+  // `__dirname` as a literal string at build time for the edge compilation
+  // removes the runtime shim entirely, so there's nothing left to fail.
+  webpack: (config, { nextRuntime }) => {
+    if (nextRuntime === "edge") {
+      config.node = { ...config.node, __dirname: true };
+      // Vercel restores Next's persistent webpack cache from the previous
+      // deployment before every build. That cache doesn't reliably bust
+      // just because this file changed, so a stale edge bundle (built
+      // before the __dirname mock above existed) can get reused verbatim.
+      // Disabling the cache for the edge compilation forces it to always
+      // recompile from source, so this config can never silently stop
+      // applying again.
+      config.cache = false;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
